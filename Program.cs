@@ -12,15 +12,18 @@ namespace Program
             string[] allLines = File.ReadAllLines("file.txt");
             string[][] sortedLines = SortLines(allLines);
             int balance = int.Parse(allLines[0]);
-            string date = "";
 
-            if (GetBalanceStatus(sortedLines, balance, date) > 0)
-            {
-                Console.Write("Введите дату и время в формате ( YYYY-MM-DD HH:mm ) : ");
-                date = Console.ReadLine();
-                Console.WriteLine(GetBalanceStatus(sortedLines, balance, date));
-            }
-            else Console.WriteLine("Incorect file!!!");
+            if (GetBalanceStatus(sortedLines, balance) > 0)
+                FindBalanceByDate(sortedLines, balance);
+            else
+                Console.WriteLine("Incorect file!!!");
+        }
+
+        public static void FindBalanceByDate(string[][] array, int balance)
+        {
+            Console.Write("Введите дату и время в формате ( YYYY-MM-DD HH:mm ) : ");
+            string date = Console.ReadLine();
+            Console.WriteLine(GetBalanceStatus(array, balance, date));
         }
 
         public static string[][] SortLines(string[] allLines)
@@ -31,7 +34,7 @@ namespace Program
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = allLines[i + 1].Split(" | ");
-                
+
                 foreach (string symbol in symbols)
                 {
                     result[i][0] = result[i][0].Replace(symbol, "");
@@ -58,7 +61,7 @@ namespace Program
             return result;
         }
 
-        public static int GetBalanceStatus(string[][] arrays, int balance, string date)
+        public static int GetBalanceStatus(string[][] arrays, int balance, string date = "")
         {
             foreach (string symbol in symbols)
             {
